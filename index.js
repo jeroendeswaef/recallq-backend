@@ -1,14 +1,10 @@
-const http = require('http');
+var proxy = require('express-http-proxy');
+var app = require('express')();
+ 
+app.use('/couch', proxy(process.env.COUCHDB_URL));
 
-const port = process.env.PORT || 3000;
+const port = 3000
 
-const server = http.createServer((req, res) => {
-    res.statusCode = 200;
-    console.info('Got request')
-res.setHeader('Content-Type', 'text/plain');
-res.end('Hello World j\n');
-});
+app.get('/', (req, res) => res.send(`OK`))
 
-server.listen(port, () => {
-    console.log(`Server running on port: ${port}`);
-});
+app.listen(port, () => console.log(`Example app listening on port ${port}!`))
